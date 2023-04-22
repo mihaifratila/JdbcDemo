@@ -1,4 +1,4 @@
-package org.example;
+package org.jdbcExamples;
 
 import java.io.FileInputStream;
 import java.sql.Connection;

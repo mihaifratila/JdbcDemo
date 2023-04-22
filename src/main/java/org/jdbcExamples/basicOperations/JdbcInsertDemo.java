@@ -1,10 +1,8 @@
-package org.example;
+package org.jdbcExamples.basicOperations;
 
 import java.sql.*;
 
-
-public class JdbcDemo
-{
+public class JdbcInsertDemo {
     public static void main(String[] args) throws SQLException {
         Connection myConn = null;
         Statement myStmt = null;
@@ -19,24 +17,29 @@ public class JdbcDemo
             // 2. Create a statement
             myStmt = myConn.createStatement();
 
-            // 3. Execute SQL query
-            myRs = myStmt.executeQuery("select * from employees");
+            // 3. Insert a new employee
+            int rowsAffected = myStmt.executeUpdate("" +
+                    "insert into employees " +
+                    "(last_name, first_name, email, department, salary) " +
+                    "values " +
+                    "('Wright', 'Eric', 'eric.wright@foo.com', 'HR', 33000.00)");
 
-            // 4. Process the result set
+            // 4. Verify this by getting a list of employees
+            myRs = myStmt.executeQuery("select * from employees order by last_name");
+
             while (myRs.next()) {
-                System.out.println(myRs.getString("last_name") + ", " + myRs.getString("first_name"));
+                System.out.println(myRs.getString("last_name") + ", " +
+                        myRs.getString("first_name"));
             }
-        } catch (Exception exc) {
-            exc.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (myRs != null) {
                 myRs.close();
             }
-
             if (myStmt != null) {
                 myStmt.close();
             }
-
             if (myConn != null) {
                 myConn.close();
             }

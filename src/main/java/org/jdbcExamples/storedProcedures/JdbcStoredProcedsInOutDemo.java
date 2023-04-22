@@ -1,8 +1,8 @@
-package org.example;
+package org.jdbcExamples.storedProcedures;
 
 import java.sql.*;
 
-public class JdbcStoredProcedsOutDemo {
+public class JdbcStoredProcedsInOutDemo {
 
     public static void main(String[] args) throws SQLException {
 
@@ -20,21 +20,21 @@ public class JdbcStoredProcedsOutDemo {
 
             // Prepare the stored procedure call
             myStmt = myConn
-                    .prepareCall("{call get_count_for_department(?, ?)}");
+                    .prepareCall("{call greet_the_department(?)}");
 
             // Set the parameters
+            myStmt.registerOutParameter(1, Types.VARCHAR);
             myStmt.setString(1, department);
-            myStmt.registerOutParameter(2, Types.INTEGER);
 
             // Call stored procedure
-            System.out.println("Calling stored procedure. get_count_for_department('" + department + "', ?)");
+            System.out.println("Calling stored procedure. greet_the_department('" + department + "')");
             myStmt.execute();
             System.out.println("Finished calling stored procedure");
 
             // Get the value of the INOUT parameter
-            int result = myStmt.getInt(2);
+            String result = myStmt.getString(1);
 
-            System.out.println("\nThe count = " + result);
+            System.out.println("\nThe result = " + result);
 
 
         } catch (Exception exc) {

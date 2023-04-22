@@ -1,8 +1,8 @@
-package org.example;
+package org.jdbcExamples.blobsAndClobs;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.FileWriter;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class ReadBlobDemo {
+public class ReadClobDemo {
 
     public static void main(String[] args) throws Exception {
 
@@ -18,8 +18,8 @@ public class ReadBlobDemo {
         Statement myStmt = null;
         ResultSet myRs = null;
 
-        InputStream input = null;
-        FileOutputStream output = null;
+        Reader input = null;
+        FileWriter output = null;
 
         try {
             // 1. Get a connection to database
@@ -28,22 +28,22 @@ public class ReadBlobDemo {
 
             // 2. Execute statement
             myStmt = myConn.createStatement();
-            String sql = "select resume from employees where email='john.doe@foo.com'";
+            String sql = "select resume_txt from employees where email='john.doe@foo.com'";
             myRs = myStmt.executeQuery(sql);
 
             // 3. Set up a handle to the file
-            File theFile = new File("resume_from_db.pdf");
-            output = new FileOutputStream(theFile);
+            File theFile = new File("resume_from_db.txt");
+            output = new FileWriter(theFile);
 
             if (myRs.next()) {
 
-                input = myRs.getBinaryStream("resume");
+                input = myRs.getCharacterStream("resume_txt");
                 System.out.println("Reading resume from database...");
                 System.out.println(sql);
 
-                byte[] buffer = new byte[1024];
-                while (input.read(buffer) > 0) {
-                    output.write(buffer);
+                int theChar;
+                while ((theChar = input.read()) > 0) {
+                    output.write(theChar);
                 }
 
                 System.out.println("\nSaved to file: " + theFile.getAbsolutePath());

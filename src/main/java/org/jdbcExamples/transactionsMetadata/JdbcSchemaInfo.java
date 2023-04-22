@@ -1,4 +1,4 @@
-package org.example;
+package org.jdbcExamples.transactionsMetadata;
 
 import java.sql.*;
 

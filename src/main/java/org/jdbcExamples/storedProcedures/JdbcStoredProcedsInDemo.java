@@ -1,4 +1,4 @@
-package org.example;
+package org.jdbcExamples.storedProcedures;
 
 import java.sql.*;
 

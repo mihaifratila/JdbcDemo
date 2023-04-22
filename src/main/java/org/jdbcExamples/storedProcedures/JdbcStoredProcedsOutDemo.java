@@ -1,15 +1,13 @@
-package org.example;
+package org.jdbcExamples.storedProcedures;
 
 import java.sql.*;
 
-public class JdbcStoredProcedsResultSetDemo {
-
+public class JdbcStoredProcedsOutDemo {
 
     public static void main(String[] args) throws SQLException {
 
         Connection myConn = null;
         CallableStatement myStmt = null;
-        ResultSet myRs = null;
 
         try {
             // Get a connection to database
@@ -22,39 +20,28 @@ public class JdbcStoredProcedsResultSetDemo {
 
             // Prepare the stored procedure call
             myStmt = myConn
-                    .prepareCall("{call get_employees_for_department(?)}");
+                    .prepareCall("{call get_count_for_department(?, ?)}");
 
             // Set the parameters
             myStmt.setString(1, department);
+            myStmt.registerOutParameter(2, Types.INTEGER);
 
             // Call stored procedure
-            System.out.println("Calling stored procedure. get_employees_for_department('" + department + "')");
+            System.out.println("Calling stored procedure. get_count_for_department('" + department + "', ?)");
             myStmt.execute();
             System.out.println("Finished calling stored procedure");
 
             // Get the value of the INOUT parameter
-            myRs = myStmt.getResultSet();
+            int result = myStmt.getInt(2);
 
-            display(myRs);
+            System.out.println("\nThe count = " + result);
+
 
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally {
             close(myConn, myStmt, null);
         }
-    }
-
-    private static void display(ResultSet myRs) throws SQLException {
-        // Process result set
-        while (myRs.next()) {
-            String lastName = myRs.getString("last_name");
-            String firstName = myRs.getString("first_name");
-            double salary = myRs.getDouble("salary");
-            String department = myRs.getString("department");
-
-            System.out.printf("%s, %s, %s, %.2f\n", lastName, firstName, department, salary);
-        }
-
     }
 
     private static void close(Connection myConn, Statement myStmt,
