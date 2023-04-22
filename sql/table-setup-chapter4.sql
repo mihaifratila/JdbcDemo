@@ -11,6 +11,8 @@ CREATE TABLE `employees` (
   `email` varchar(64) DEFAULT NULL,
   `department` varchar(64) DEFAULT NULL,
   `salary` DECIMAL(10,2) DEFAULT NULL,
+  `resume` BLOB,
+  `resume_txt` LONGTEXT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 

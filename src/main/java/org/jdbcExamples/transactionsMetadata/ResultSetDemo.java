@@ -1,4 +1,4 @@
-package org.jdbcExamples.basicOperations;
+package org.jdbcExamples.transactionsMetadata;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
